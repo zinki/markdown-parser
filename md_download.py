@@ -15,7 +15,7 @@ class Application(Frame):
 
     def createWidgets(self):
         # 创建并添加Label
-        Label(self.master, text='文档根目录：', font=12, width=10).grid(row=1, column=0)
+        Label(self.master, text='文档地址：', font=12, width=10).grid(row=1, column=0)
         # 创建并添加Entry,用于接受用户输入
         self.name_entry = Entry(self.master, font=16)
         self.name_entry.grid(row=1, column=1, padx=5, pady=10)
@@ -24,6 +24,8 @@ class Application(Frame):
         # 创建并添加Entry,用于接受用户输入
         self.path_entry = Entry(self.master, font=16)
         self.path_entry.grid(row=2, column=1, padx=5, pady=10)
+        self.name_entry.insert(0, r"D:\Users\qzhang59\Documents\zblog\source\_posts\Wordcloud生成云图.md")
+        self.path_entry.insert(0, r"D:\Users\qzhang59\SynologyDrive\图片\图床")
 
         self.alertButton = Button(self, text='确认', width=5, command=self.type_pic_path)
         self.alertButton.grid(row=3, column=0, padx=10)
@@ -36,13 +38,11 @@ class Application(Frame):
             self.quit()
         print(self.name_entry.get())
         print(self.path_entry.get())
-        sub_path = directory.find_sub_path(self.name_entry.get())
-        if len(sub_path) <= 0:
+        if len(self.name_entry.get()) <= 0:
             self.quit()
-        for path in sub_path:
-            pics = article.find_pics(path)
-            if len(pics) > 0:
-                picture.start_download_pic(self.path_entry.get(), pics)
+        pics = article.find_pics(self.name_entry.get())
+        if len(pics) > 0:
+            picture.start_download_pic(self.path_entry.get(), pics)
         self.quit()
 
     def quit(self):
