@@ -26,7 +26,7 @@ class Application(Frame):
         self.name_entry = Entry(self.master, font=16)
         self.name_entry.grid(row=2, column=1, padx=5, pady=10)
         # 创建并添加Label
-        Label(self.master, text='图片目录：', font=12, width=10).grid(row=3, column=0)
+        Label(self.master, text='目标目录：', font=12, width=10).grid(row=3, column=0)
         # 创建并添加Entry,用于接受用户输入
         self.path_entry = Entry(self.master, font=16)
         self.path_entry.grid(row=3, column=1, padx=5, pady=10)
@@ -36,8 +36,8 @@ class Application(Frame):
         self.quitButton = Button(self, text="退出", width=5, command=self.quit)
         self.quitButton.grid(row=5, column=10)
         self.grid(columnspan=10, pady=10)
-        self.name_entry.insert(0, r"D:\Users\qzhang59\Documents\zblog\source\_posts")
-        self.path_entry.insert(0, r"D:\Users\qzhang59\SynologyDrive\图片\图床")
+        self.name_entry.insert(0, r"")
+        self.path_entry.insert(0, r"")
 
     def quit(self):
         quit()
@@ -68,12 +68,4 @@ def download(self):
             self.increment(round(per))
 
 
-def main():
-    root = Tk()
-    root.geometry('380x300')
-    root.title("请输入图片保存位置")
-    Application(root)
-    root.mainloop()
 
-
-main()

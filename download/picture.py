@@ -104,3 +104,53 @@ def download_pic_callback(img):
 
     # 释放锁
     thread_lock.release()
+
+def start_replace_pic(pic_path, images):
+    for img in images:
+        image_path = build_pic_name(pic_path, img)
+        # 已存在则不重复下载
+        if os.path.exists(image_path):
+            print('article name:' + img.article_name)
+            print('pic has existed:' + img.image_url)
+            img.error_reason = "pic has existed:"
+            download_pic_callback(img)
+            return
+
+        # 图片链接前缀不包含http
+        if not img.image_url.startswith("https"):
+            print('article name:' + img.article_name)
+            print('pic has invalid url:' + img.image_url)
+            img.error_reason = "pic has invalid url"
+            download_pic_callback(img)
+            return
+
+        header = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.114 Safari/537.36',
+            'Cookie': 'AspxAutoDetectCookieSupport=1',
+        }
+
+        # 下载图片
+        request = urllib.request.Request(img.image_url, None, header)
+        try:
+            response = urllib.request.urlopen(request, timeout=10)
+        # 下载失败
+        except Exception as error:
+            print('pic cannot download:' + img.image_url)
+            img.error_reason = str(error)
+            download_pic_callback(img)
+            return
+
+        # 保存图片
+        try:
+            fp = open(image_path, 'wb')
+            fp.write(response.read())
+            fp.close()
+        # 保存失败
+        except IOError as error:
+            print(error)
+            img.error_reason = str(error)
+            download_pic_callback(img)
+            return
+
+        # 下载完成回调
+        download_pic_callback(img)
