@@ -1,8 +1,6 @@
 from tkinter import *
 from tkinter.ttk import Progressbar
-from download import picture
-from download import directory
-from download import article
+from mdlib import directory, article, picture
 
 
 class Application(Frame):
