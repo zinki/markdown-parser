@@ -104,3 +104,7 @@ def download_pic_callback(img):
 
     # 释放锁
     thread_lock.release()
+
+def start_replace_pic(source_path, target_path, images):
+    for img in images:
+        str.replace(img.image_url, source_path,target_path)
